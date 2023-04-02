@@ -1,5 +1,50 @@
 
 # 이정욱
+## 3_30일
+> * props란?<br>
+Read-Only, 수정이 불가하고 읽기 전용이다. 즉 값을 변경 할 수 없다는 것을 의미한다. 리액트 문서에는 '모든 리액트 컴포넌트는 그들의 Props에 관해서 pure 함수와 같은 역할을 해야한다'고 명시되어 있다.
+> * Component 생성 및 Props의 사용법
+>~~~
+> const App = () ={
+> const example = [
+>     {
+>      id: "id1",
+>      title: "title1",
+>    },
+>    { id: "id2", 
+>      title: "title2", 
+>    },
+>];
+>}
+>~~~
+> App.js에서 위와 같은 방법으로 배열을 만든 다음 const명의 이름을 example로 정하였다.
+>그 후 같은 폴더 내 Example.js라는 파일 생성 후 다음과 같이 코딩을 해준다.
+>~~~
+>const example = (props) => {
+>  return(
+> <div 
+>id = {props.items[0].id} 
+>title = {props.items[0].title}>
+></div>
+> <div 
+>id = {props.items[1].id} 
+>title = {props.items[1].title}>
+></div>
+>  )
+>}
+>~~~
+> 위와 같이 작성을 하게되면 앞에 만들었던 example이라는 배열 안의 items 인덱스 0번의 값은 id와 title, 그 다음 div에서 인덱스 값 1번의 id와 title의 값이 호출이된다. 앞의 App.js로 돌아와서 
+>~~~
+> import Example from "./Exaple"
+> ...   return (
+>    <div>
+>      <h2>props를 이용하여 값 호출</h2>
+>      <div items={example}></div>
+>    </div>
+>  );
+>}
+>~~~
+>Example에서 지정한 items란 변수를 이용하여 App.js에 선언하고 위에 만든 example 배열로 {}를 사용하여 지정하면 example내 id와 title의 값을 사용 할 수 있다. 이와 같이 컴포넌트를 만든 후 props를 통해 값을 불러올 수 있다.
 ## 3_23일
 > * JSX란? <br>
 자바스크립트의 확장 문법이며 JavaScript와 XML/HTML를 합친 형태임<br>  
