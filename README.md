@@ -40,7 +40,7 @@ if문, 삼항연산자, 논리 연산자등을 이용하여 다양하게 사용�
 >* ### 컴포넌트 렌더링 막기
 >   조건부 렌더링을 이용하여 결과값에 null을 리턴하면 리액트 내에서 렌더링 되지 않는다. 다음과 같은 예제코드를 통해 이해할 수 있다.
 >~~~jsx
-> fuction test(props){
+> fuction ShowWarning(props){
 >   if(!props.warning){
 >   return null;    
 >}  
@@ -48,6 +48,26 @@ if문, 삼항연산자, 논리 연산자등을 이용하여 다양하게 사용�
 >  <div>경고</div>    
 >);  
 >}
+>~~~
+>  위에서 ShowWarning라고 작성한 컴포넌트는 props.warning의 값이 false이면 null를 리턴한다. 조건부 렌더링에서 삼항연산자를 이용하여 컴포넌트를 만들고 이를 이용하여 컴포넌트 렌더링도 막는 코드를 작성해 보겠다.
+>~~~jsx
+>function test(props){
+>    const [warningBanner,setwarningBanner] = useState(false);
+>
+>   const handleToggleClick = ()=>{
+>      setwarningBanner(preShowWarning => !preShowWarning);
+>    }
+>
+>    return(
+>        <div>
+>            <ShowWarning warning={warningBanner}/>
+>            <button onClick={handleToggleClick}>
+>                {warningBanner ? '감추기':'보이기'}
+>            <button>
+>        </div>
+>    );
+>}
+>~~~
 ## 4_13일
 > * ### Hook이란?
 >    리액트 state의생명주기 기능에 갈고리를 걸어 원하는 시점에 정해진 함수를 실행되도록 만든 기능. 훅의 이름은 모두 'use'를 앞에 붙임
