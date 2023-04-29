@@ -1,5 +1,41 @@
 
 # 이정욱
+## 4_27일
+>* ### 이벤트 처리하기
+>   react에서 클릭 이벤트를 처리하는 예제코드는 다음과 같다
+>~~~ jsx
+>   <button onClick={activate}>
+>       Activate
+>   </button>
+>~~~
+>   리액트에서 이벤트 이름은 onClick(Camel case)로 사용함<br>
+>   위의 이벤트 헨들러에서 ativate를 실행 할려며녀 activate의 컴포넌트를 만들어 실행해야 한다. activate컴포넌트는 화살표 함수로 만들 수 있고 다음과 같은 예제를 볼 수 있다.
+>~~~jsx
+>function test(props){
+> const [isToggleon, setToggleon] = useState(true);
+> const ativiate = () => {
+> setToggleon((isToggleon)=>!isToggleon);    
+>}
+>return(
+>   <button onClick={activate}>
+>       Activate
+>   </button>    
+>)}
+>~~~
+>* ### 조건부 렌더링
+>   조건부 랜더링이란 조건에 따른 렌더링이 달라지는 것을 의미한다.<br>
+if문, 삼항연산자, 논리 연산자등을 이용하여 다양하게 사용가능.
+>* ### 컴포넌트 렌더링 막기
+>   조건부 렌더링을 이용하여 결과값에 null을 리턴하면 리액트 내에서 렌더링 되지 않는다. 다음과 같은 예제코드를 통해 이해할 수 있다.
+>~~~jsx
+> fuction test(props){
+>   if(!props.warning){
+>   return null;    
+>}  
+>   return(
+>  <div>경고</div>    
+>);  
+>}
 ## 4_13일
 > * ### Hook이란?
 >    리액트 state의생명주기 기능에 갈고리를 걸어 원하는 시점에 정해진 함수를 실행되도록 만든 기능. 훅의 이름은 모두 'use'를 앞에 붙임
