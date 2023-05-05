@@ -1,5 +1,104 @@
 
 # 이정욱
+## 5_4일
+* ### 리스트와 키의 개념
+1. 리스트는 자바스크립트의 변수나 객체를 하나의 변수로 묶어 놓은 배열과 같다.
+2. 키는 각 객체나 아이템을 구분할 수 있는 고유한 값을 의미
+3. 리액트에서 배열과 키를 사용하는 반복되는 다수의 엘리멘트를 쉽게 렌더링 가능 -> map함수에 대한 내용
+~~~jsx
+const doubled = numbers.map((number)=>number *2)
+// numbers 배열에 있는 각각의 요소를 map()를 이용해 하나씩 추출, 2를 곱한 후 doubled라는 배열에 다시 넣음
+~~~
+json 스타일로는 다음과 같이 배열 사용 가능
+~~~jsx
+  [
+    {
+        key:1,
+        id : foo,
+        pass :123,
+    },
+     {
+        key:2,
+        id : foo2,
+        pass :1234,
+    }
+]
+~~~
+* 기본적인 리스트 컴포넌트
+~~~jsx
+funtion NumberList(props){
+    const {number} = props;
+
+    const listItems = number.map((number)=>
+    <li>{number}</li>
+    );
+
+    return (
+        <ul>{listItems}</ul>
+    );
+}
+
+const numbers =[1,2,3,4,5];
+
+ReactDom.render(
+    <ul>document.getEmentById('root')</ul>
+);
+~~~
+위와 같은 코드를 실행하면 "리스트 아이템에 무조건 키가 있어야 한다"는 경고 문고가 나옴<br>
+
+이유? -> 각각의 아이템에 key props가 없기 때문
+
+* ### 리스트의 키란?
+ 1. 리스트에서 키는 "리스트에서 아이템을 구분하기 위한 고유한 문자열"이다.
+ 2. 리액트에서 키의 값은 같은 리스트에 있는 엘리먼트 사이에서만 고유한 값이면 된다.
+* ### 제어 컴포넌트
+HTML 폼에서는 자체적으로 state를 관리 하지만
+제어 컴포넌트에서는 모든 데이터를 state에서 관리한다.<br>
+
+HTML 폼을 리액트의 제어 컴포넌트로 만들어보겠다.
+~~~jsx
+function NameForm(props) {
+    const [value, setVaule] = useState('');
+
+    const handleChange = (event) => {
+        setValue(event.target.value);
+    }
+
+    const handleSubmit = (event) => {
+        alert('입력한 이름: ' + value);
+        event.preventDefault();
+    }
+
+    return(
+        <form onSubmit={handleSumbit}>
+            <label>
+            이름:
+            <input type="text" value={value} onChange={handleChange}>
+            </label>
+            <button type="submit"/>제출</button>
+        </form>
+    );//value={value} 리액트 컴포넌트의 state에서 값을 넣어줌
+    //onChange={handleChange} handleChange함수에서 setVaule() 함수를 사용해서 새롭게 변경된 값을 value라는 이름의 state에 저장
+}
+~~~
+### select태그
+HTML과 마찬가지로 사용되며 리액트에서는 이벤트 핸들러를 사용때 onChange를 사용하여 함수를 불러와 이벤트 발생시 시작되는 조건을 실행 할 수 있다.
+~~~jsx
+        <select value={gender} onChange={test}>
+          <option value="남자">남자</option> 
+          <option value="여자">여자</option>
+        </select>
+        // onChange={test} 폼 요소의 값이 변경될 때 실행되는 함수를 지정
+~~~  
+### Input Null Value
+value prop에 정해진 값을 넣으면 코드를 수정하지 않는 한 입력값을 바꿀 수 없지만, 자유롭게 입력할 수 있게 만들고 싶으면 null을 넣어주면 된다.
+~~~jsx
+//예제
+setTimeout(funtion() {
+    ReactDOM.render(<input value={null}>, rootNode);
+}, 1000);
+~~~      
+
 ## 4_27일
 >* ### 이벤트 처리하기
 >   react에서 클릭 이벤트를 처리하는 예제코드는 다음과 같다
