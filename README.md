@@ -1,5 +1,90 @@
 
 # 이정욱
+## 5_11일
+* ### Shared State
+1. 공유된 state를 의미. 자식컴포넌트들이 가장 가까운 공통된 부모 컴포넌트의 state룰 공유해서 사용
+2. 어떤 컴포넌트 state에 있는 데이터를 여러 개의 하위 컴포넌트에서 공통적으로 사용하는 경우를 뜻 함
+* 물을 끓음 여부를 알려주는 컴포넌트 
+~~~jsx
+function BoilingVerdict(props){
+  if(props.celsius >= 100){
+    return<p>물이 끓습니다</p>
+  }
+  return<p>물이 끓지 않습니다</p> // 물을 끓음 여부를 알려주는 컴포넌트 중 자식 컴포넌트를 생성 함
+}
+~~~
+이 컴포넌트를 실제로 사용하는 부모 컴포넌트는 다음과 같다.
+~~~jsx
+function TemperatureInput(props){
+
+    const [temperature, setTemperature] = useState('');
+  
+  const handleChange = (event)=> {
+    setTemperature(event.target.value); //setTemperature 함수를 통해 온도 값을 가지고 있는 temperature라는 이름의 state를 업데이트
+  };
+
+  return(
+    <fieldset>
+      <legend>
+        온도를 입력해주세요
+      </legend>
+      <input value={temperature} onChange={handleChange} />
+      <BoilingVerdict celsius={parseFlaot(temperature)}>
+      //state는 앞에 만든 BoilingVerdict 컴포넌트에 celsius라는 이름의 props로 전달
+    </fieldset>
+  );
+} 
+~~~
+* 입력 컴포넌트 추출
+~~~jsx
+const scaleNames = {
+  c:"섭씨",
+  f:"화씨",
+};
+function TemperatureInput(props){
+
+    const [temperature, setTemperature] = useState('');
+  
+  const handleChange = (event)=> {
+    setTemperature(event.target.value); //setTemperature 함수를 통해 온도 값을 가지고 있는 temperature라는 이름의 state를 업데이트
+  };
+
+  return(
+    <fieldset>
+      <legend>
+        온도를 입력해주세요(단위:{scaleNames[props.scale]})
+        //props에 단위를 나타내는 scale을 추가하여 온도의 단위를 섭씨,화씨로 입력 가능하게 작성
+      </legend>
+      <input value={temperature} onChange={handleChange} />
+      <BoilingVerdict celsius={parseFlaot(temperature)}>
+      //state는 앞에 만든 BoilingVerdict 컴포넌트에 celsius라는 이름의 props로 전달
+    </fieldset>
+  );
+} 
+~~~
+위에 작성한 코드에서 scaleNames를 추가. 지정 받는 props에 
+온도의 단위를 섭씨,화씨로 입력 가능하게 만들어 준다.
+* Shared State 적용하기
+<br>
+위에 작성한 코드에서 state를 공통된 부모 컴포넌트로 올려서 shared state를 적용을 할 수 있다. state를 상위 컴포넌트로 올린다는 것은 
+   ### "State를 끌어올린다"
+    라고 말하고 위에 부분에서  컴포넌트 온도 값을 가져오는 부분을 아래와 같이 작성한다.
+~~~jsx
+// 변경 전
+<input value={temperature} onChange={handleChange} />
+// 변경 후
+<input value={props.temperature} onChange={handleChange} />
+~~~
+이렇게 작성되면 온도 값을 컴포넌트 state에서 가져오는 것이 아닌 props에서 가져오게 되고, 앞에 hadeleChange() 함수를 다음과 같이 변형해야 한다.
+~~~jsx
+//변경 전
+const handleChange = (event)=> {
+    setTemperature(event.target.value); //setTemperature 함수를 통해 온도 값을 가지고 있는 temperature라는 이름의 state를 업데이트
+// 변경 후  
+const handleChange = (event)=> {
+    props.onTemperatureChange(event.target.value);  
+~~~
+위와 같이 작성을 하면 props에 있는 onTemperatureChange 함수를 통해 변경된 온도 값이 상위 컴포넌트로 이동되고, state는 제거 되고 오로지 상위 컴포넌트에서 전달받은 값만 사용이 되어 Shared State를 적용하고 있는 상태가 된다.
 ## 5_4일
 * ### 리스트와 키의 개념
 1. 리스트는 자바스크립트의 변수나 객체를 하나의 변수로 묶어 놓은 배열과 같다.
