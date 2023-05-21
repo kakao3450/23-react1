@@ -1,5 +1,105 @@
 
 # 이정욱
+## 5_18일
+* ### 컴포넌트 합성
+1. '여러 개의 컴포넌트를 합쳐서 새로운 컴포넌트를 만드는 것'
+2.  containment(담다, 포함하다, 격리하다)
+특정 컴포넌트가 하위 컴포넌트를 포함ㅁ하는 형태의 합성 방법
+3. 이런 컴포넌트에서는 children prop을 사용하여 자식 엘리먼트를 출력에 그대로 전달하는 방법이 좋음
+4. childeren prop은 컴포넌트의 props에 기본적으로 들어있는 children속성을 사용
+5. children이 배열로 되어있는 것은 여러 개의 하위 컴포넌트를 위한 것
+~~~jsx
+React.createElement(
+  type,
+  [props],
+  [...children],
+)
+~~~
+~~~jsx
+function WelcomeDialog(props){
+  return(
+    <FancyBodrder color="blue">
+    <h1 className="Dialog-title">
+      어서오세요
+    </h1> 
+    <p className="Dialog-message">
+      우리 사이트에 방문하신 것을 환영합니다.
+    <p> 
+    </FancyBodrder>
+  )
+}
+~~~
+* ## specialization(특수화)
+* 웰컴다이얼로그는 다이얼로그의 특별한 케이스이다.
+* 범용적인 개념을 구별이 되게 구체화하는 것을 특수화라고 한다
+* 겍체지향 언어에서는 상속을 사용하여 특수화를 구현한다.
+* 리액트에선느 합성을 사용하여 특수화를 구현한다.
+* 다음 예와 같이 특수화는 범용적으로 쓸 수 있는 컴포넌트를 만들어 놓고
+특수한 목적으로 사용하는 합성 방식이다.
+~~~jsx
+function Dialog(props){
+  return(
+    <FancyBorder color="blue">
+    <h1 className="Dialog-title">
+      {props.title}
+    </h1> 
+    <p className="Dialog-message">
+      {props.message}
+    <p> 
+    </FancyBorder>
+  );
+}
+
+function WelcomeDialog(props){
+  return(
+    <Dialog
+      title= "어서오세요"
+      message = "사이트 방문을 환영합니다"
+    />
+  );
+}
+~~~
+* ## Containment와 Specialization을 같이 사용하기
+* Containment를 위해서 props.children을 사용하고, Specialization을 사용하기 위해서는 직접 정의한 props를 사용하면 된다.
+* Dialog를 사용하는 SignUpDialog는 Specialization을 위한 props인 title, message에 값을 넣어 주고 있음
+* 이러한 형태로 Containment와 Specialization을 같이 사용할 수 있다
+-------
+
+* ## 상속에 대해 알아보기
+* 합성과 대비되는 개념으로 상속이 있음
+* 자식 클래스는 부모 클래스가 가진 변수나 함수 등의 속성을 모두 갖게 되는 개념
+* 리액트에서는 상속보다는 합성을 통해 새로운 컴포넌트를 생성
+
+* 복잡한 컴포넌트를 쪼게 여러 개의 컴포넌트로 만들고, 만든 컴포넌트들을 조합하여 새로운 컴포넌트를 만들 수 있음
+-------------------------
+* ## 컨택스트란?
+* 기존의 일반적인 리액트에서는 데이터가 컴포넌트의 props를 통해 부모에서 자깃으로 단방향으로 전달되었음
+* 컨텍스트는 리액트 컴포넌트들 사이에서 데이터를 기존의 props를 통해 전달하는 방식 대신 컴포넌트 트리를 통해 곧바로 컴포넌트에 전달하는 새로운 방식
+----
+*  ## 언제 컨텍스트를 사용해야할까?
+* 여러 컴포넌트에서 자주 필요로 하는 데이터는 로그인 여부, 로그인 정보, UI테마, 현재 선택된 언어 등이 있음
+* // p.382 코드 참조
+* // p.383은 컨텍스트를 사용한 예제
+----
+* ## 컨텍스트를 사용하기 전에 고려할 점
+* 컨텍스트는 다른 레벨의 많은 컴포넌트가 특정 데이터를 필요로 하는 경우에 주로 사용
+* 다른 레벨의 많은 컴포넌트가 데이터를 필요로 하는 경우가 아니면 props를 통해 데이터를 전달하는 컴포넌트 합성 방버이 더 적합함 
+----
+* ## 컨텍스트 API
+* React.createContext
+* 컨텍스트를 생성하기 위한 함수
+* 하위 컴포넌트는 가장 가까운 상의ㅜ 레벨의 provider로 부터 컨텍스트를 받게 되지만 만일 provider를 찾을 수 없다면 위에서 설정한 기본값을 사용하게 됨
+* ## Context Provider
+* Context Provider 컴포넌트 하위 컴포넌트들을 감싸주면 모든 하위 컴포넌트들이 해당 컴텍스트의 데이터에 접근할 수 있게 됨
+* Provider 컴포넌트에는 value라는 prop이 잇고 이것은 provider컴포넌트 하위에 있는 컴포넌트에 전달
+* 하위 컴포넌트를 consumer 컴포넌트라 부름
+* ## class contextType
+* provider 하위에 있는 클래스 컴포넌트에서 컨텍스트의 데이터에 접근하기 위해 사용
+* class 컴포넌트는 더 이상 사용하지 않으므로 참고만 함
+* ## Context Consumer
+* 함수형 컴포넌트에서 context consumer를 사용하여 컨텍스트를 구독할 수 있음
+* 컴포넌트의 자식으로 함수가 올 수 있는데 이것을 function as a child라 부름
+* context.consumer로 감싸주면 리액트 개발자 도구에 표시 됨 
 ## 5_11일
 * ### Shared State
 1. 공유된 state를 의미. 자식컴포넌트들이 가장 가까운 공통된 부모 컴포넌트의 state룰 공유해서 사용
